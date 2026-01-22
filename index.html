@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
     <style>
-        /* Page Specific Styles */
+        /* Page Specific Styles - NO GAS FEES */
         .hero-section {
             text-align: center;
             padding: 3rem 1rem;
@@ -15,25 +15,6 @@
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('assets/pattern.png') repeat;
-            opacity: 0.1;
-            z-index: 0;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
         }
         
         .hero-section h1 {
@@ -59,7 +40,6 @@
             margin: 1rem auto;
             max-width: 800px;
             border-left: 4px solid var(--accent-color);
-            backdrop-filter: blur(10px);
         }
         
         .wallet-info {
@@ -70,62 +50,131 @@
             gap: 1rem;
         }
         
-        .wallet-status {
-            color: var(--warning-color);
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        
-        .wallet-address {
-            word-break: break-all;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            font-family: monospace;
-        }
-        
-        /* Registration Form */
-        .registration-form {
+        /* FREE Activity Cards */
+        .free-activity-card {
             background: var(--card-bg);
-            padding: 2rem;
             border-radius: 15px;
-            margin: 2rem auto;
-            max-width: 600px;
+            padding: 2rem;
+            margin: 2rem 0;
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
         
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
+        .free-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
             font-weight: bold;
         }
         
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 8px;
+        /* Task Cards Grid */
+        .task-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .task-card-individual {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
             border: 1px solid var(--glass-border);
-            background: rgba(0, 43, 92, 0.6);
-            color: var(--text-color);
-            font-size: 1rem;
             transition: all 0.3s ease;
         }
         
-        .form-input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.3);
-            outline: none;
+        .task-card-individual:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
         
-        .form-note {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.7);
-            margin-top: 0.5rem;
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .task-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+        }
+        
+        .task-title {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            margin: 0;
+        }
+        
+        .task-reward {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            text-shadow: 0 0 5px rgba(255,179,0,0.3);
+        }
+        
+        .task-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin: 1rem 0;
+        }
+        
+        .status-pending {
+            background: rgba(243, 156, 18, 0.2);
+            color: var(--warning-color);
+            border: 1px solid var(--warning-color);
+        }
+        
+        .status-completed {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+        
+        /* Social Bonus Cards - अलग-अलग Cards */
+        .bonus-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .bonus-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .bonus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        
+        .bonus-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .bonus-amount {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 1rem 0;
         }
         
         /* Stats Grid */
@@ -148,233 +197,6 @@
         .stat-card:hover {
             background: rgba(255,255,255,0.1);
             transform: translateY(-3px);
-            box-shadow: var(--neon-glow);
-        }
-        
-        .stat-label {
-            color: var(--accent-color);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .stat-value {
-            color: var(--secondary-color);
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        
-        /* Tasks Section */
-        .tasks-section {
-            margin: 3rem 0;
-        }
-        
-        .section-title {
-            color: var(--secondary-color);
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-            text-shadow: 0 0 5px rgba(255,179,0,0.3);
-        }
-        
-        .tasks-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .task-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 1.5rem;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .task-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4), var(--neon-glow);
-        }
-        
-        .task-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .task-icon {
-            font-size: 2.5rem;
-            color: var(--accent-color);
-        }
-        
-        .task-title {
-            color: var(--accent-color);
-            font-size: 1.3rem;
-            margin: 0;
-        }
-        
-        .task-description {
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-        
-        .task-reward {
-            color: var(--secondary-color);
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 1rem 0;
-            text-shadow: 0 0 5px rgba(255,179,0,0.3);
-        }
-        
-        .task-status {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .status-pending {
-            background: rgba(243, 156, 18, 0.2);
-            color: var(--warning-color);
-            border: 1px solid var(--warning-color);
-        }
-        
-        .status-completed {
-            background: rgba(46, 204, 113, 0.2);
-            color: var(--success-color);
-            border: 1px solid var(--success-color);
-        }
-        
-        /* Daily Tasks Grid */
-        .daily-tasks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-        
-        .daily-task-card {
-            background: rgba(0, 67, 135, 0.6);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-        }
-        
-        .daily-task-card:hover {
-            background: rgba(0, 87, 175, 0.7);
-            transform: translateY(-3px);
-        }
-        
-        /* Button Variations */
-        .btn-primary {
-            background: linear-gradient(45deg, var(--secondary-color), var(--hover-color));
-            color: var(--primary-color);
-        }
-        
-        .btn-success {
-            background: linear-gradient(45deg, var(--success-color), #27ae60);
-            color: white;
-        }
-        
-        .btn-warning {
-            background: linear-gradient(45deg, var(--warning-color), #e67e22);
-            color: white;
-        }
-        
-        .btn-danger {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-        }
-        
-        .btn-info {
-            background: linear-gradient(45deg, var(--info-color), #2980b9);
-            color: white;
-        }
-        
-        /* Modal Styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 90%;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5), var(--neon-glow);
-            position: relative;
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 1;
-        }
-        
-        .modal-title {
-            color: var(--secondary-color);
-            margin-bottom: 1.5rem;
-            text-align: center;
-            font-size: 1.8rem;
-        }
-        
-        .modal-message {
-            margin: 1.5rem 0;
-            text-align: center;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        /* Loading Spinner */
-        .loading-spinner {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: var(--accent-color);
-            animation: spin 1s ease-in-out infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
         
         /* Responsive Design */
@@ -383,15 +205,9 @@
                 font-size: 2rem;
             }
             
+            .task-cards-grid,
+            .bonus-cards-grid,
             .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .tasks-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .daily-tasks-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -399,65 +215,18 @@
                 flex-direction: column;
                 text-align: center;
             }
-            
-            .modal-buttons {
-                flex-direction: column;
-            }
         }
         
-        /* Referral Section */
-        .referral-section {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 15px;
-            margin: 2rem 0;
-            border: 1px solid var(--glass-border);
-        }
-        
-        .referral-levels {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        
-        .level-box {
-            background: rgba(0,43,92,0.6);
+        /* No Gas Fee Message */
+        .no-gas-message {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid var(--success-color);
             padding: 1rem;
             border-radius: 10px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .level-box:hover {
-            transform: translateY(-3px);
-            background: rgba(0,43,92,0.8);
-        }
-        
-        .referral-link-box {
-            background: rgba(0,0,0,0.3);
-            padding: 1rem;
-            border-radius: 8px;
-            word-break: break-all;
-            font-family: monospace;
             margin: 1rem 0;
-            font-size: 0.9rem;
-        }
-        
-        /* Admin Section */
-        .admin-section {
-            background: rgba(231, 76, 60, 0.1);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin: 2rem 0;
-            border: 1px solid #e74c3c;
-        }
-        
-        .admin-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
+            text-align: center;
+            color: var(--success-color);
+            font-weight: bold;
         }
     </style>
 </head>
@@ -478,278 +247,249 @@
 
     <!-- Hero Section -->
     <div class="hero-section">
-        <div class="hero-content">
-            <h1>Free Earn VNTT Tokens</h1>
-            <p>Complete simple tasks and earn VNTT tokens daily. Connect your wallet to get started!</p>
-            
-            <!-- Wallet Section -->
-            <div class="wallet-section">
-                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Wallet Status</h3>
-                <div class="wallet-info">
-                    <div>
-                        <p id="walletStatusText" class="wallet-status">Not Connected</p>
-                        <p id="walletAddressText" class="wallet-address"></p>
-                    </div>
-                    <button onclick="connectWallet()" class="btn wallet-connect-btn">
-                        Connect Wallet
-                    </button>
+        <h1>🎉 Free Earn VNTT Tokens 🎉</h1>
+        <p>Complete simple tasks and earn VNTT tokens daily. <strong>No Gas Fees Required!</strong> Connect your wallet to get started!</p>
+        
+        <!-- Wallet Section -->
+        <div class="wallet-section">
+            <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Wallet Status</h3>
+            <div class="wallet-info">
+                <div>
+                    <p id="walletStatusText" style="color: var(--warning-color); font-weight: bold;">Not Connected</p>
+                    <p id="walletAddressText" style="word-break: break-all; font-size: 0.9rem;"></p>
                 </div>
+                <button onclick="connectWallet()" class="btn wallet-connect-btn">
+                    Connect Wallet
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Main Container -->
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
-        <!-- Registration Form (Only shows when wallet connected but not registered) -->
-        <div id="registrationSection" class="registration-form" style="display: none;">
-            <h2 style="color: var(--secondary-color); text-align: center; margin-bottom: 1.5rem;">
-                Complete Registration
-            </h2>
-            <div class="form-group">
-                <label class="form-label">Referral Address (Optional):</label>
-                <input type="text" id="referralAddress" class="form-input" placeholder="Enter referral address (0x...)" />
-                <p class="form-note">If you have a referral, enter their wallet address. Otherwise leave empty.</p>
-            </div>
-            <button onclick="registerUser()" class="btn btn-success" style="width: 100%;">
-                Complete Registration
-            </button>
+        <!-- No Gas Fee Message -->
+        <div class="no-gas-message">
+            ⚡ <strong>NO GAS FEES REQUIRED!</strong> All activities are completely FREE. No transaction costs.
         </div>
 
-        <!-- User Statistics -->
+        <!-- User Stats -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-label">Total Earned</div>
-                <div class="stat-value" id="totalEarnedStat">0 VNTT</div>
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Earned</div>
+                <div class="stat-value" id="totalEarnedStat" style="color: var(--secondary-color); font-size: 1.8rem; font-weight: bold;">0 VNTT</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Locked Tokens</div>
-                <div class="stat-value" id="lockedTokensStat">0 VNTT</div>
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-bottom: 0.5rem;">Locked Tokens</div>
+                <div class="stat-value" id="lockedTokensStat" style="color: var(--secondary-color); font-size: 1.8rem; font-weight: bold;">0 VNTT</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Direct Referrals</div>
-                <div class="stat-value" id="referralsStat">0</div>
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-bottom: 0.5rem;">Direct Referrals</div>
+                <div class="stat-value" id="referralsStat" style="color: var(--secondary-color); font-size: 1.8rem; font-weight: bold;">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Account Status</div>
-                <div class="stat-value" id="accountStatusStat">Inactive</div>
+                <div style="color: var(--accent-color); font-size: 0.9rem; margin-bottom: 0.5rem;">Account Status</div>
+                <div class="stat-value" id="accountStatusStat" style="font-size: 1.2rem; font-weight: bold;">Inactive</div>
             </div>
         </div>
 
         <!-- Daily Claim Section -->
-        <div class="card" style="margin: 2rem 0;">
-            <h2 class="section-title" style="color: var(--accent-color); text-align: center; margin-bottom: 1.5rem;">
-                Daily Claim - 100 VNTT
-            </h2>
-            <div style="text-align: center;">
-                <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">
-                    Claim your daily 100 VNTT tokens. Available once every 24 hours.
-                </p>
-                <button onclick="dailyClaim()" class="btn btn-success" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                    Claim Daily Reward (100 VNTT)
-                </button>
-                <p id="nextClaimInfo" style="margin-top: 1rem; color: var(--accent-color); font-size: 0.9rem;"></p>
-            </div>
-        </div>
-
-        <!-- Social Media Tasks (Separate Cards) -->
-        <div class="tasks-section">
-            <h2 class="section-title">Social Media Tasks</h2>
-            
-            <div class="tasks-container">
-                <!-- Facebook Task -->
-                <div class="task-card">
-                    <div class="task-header">
-                        <div class="task-icon">📘</div>
-                        <h3 class="task-title">Facebook Task</h3>
-                    </div>
-                    <div id="task0Status" class="task-status status-pending">Pending</div>
-                    
-                    <p class="task-description">
-                        Follow our official Facebook page to earn 100 VNTT tokens.
-                        Visit our page, click Follow, then verify below.
-                    </p>
-                    
-                    <div class="task-reward">Reward: 100 VNTT</div>
-                    
-                    <div style="margin-top: 1.5rem;">
-                        <p style="color: var(--accent-color); margin-bottom: 0.5rem; font-weight: bold;">
-                            Verification Steps:
-                        </p>
-                        <ol style="color: rgba(255,255,255,0.8); padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                            <li>Visit facebook.com/yourpage</li>
-                            <li>Click "Follow" button</li>
-                            <li>Return here and click Verify</li>
-                        </ol>
-                    </div>
-                    
-                    <button onclick="completeTask(0)" class="btn btn-primary" style="width: 100%;">
-                        Verify Facebook Task
-                    </button>
-                </div>
-
-                <!-- Instagram Task -->
-                <div class="task-card">
-                    <div class="task-header">
-                        <div class="task-icon">📷</div>
-                        <h3 class="task-title">Instagram Task</h3>
-                    </div>
-                    <div id="task1Status" class="task-status status-pending">Pending</div>
-                    
-                    <p class="task-description">
-                        Follow our Instagram account to earn 100 VNTT tokens.
-                        Find our profile, click Follow, then verify.
-                    </p>
-                    
-                    <div class="task-reward">Reward: 100 VNTT</div>
-                    
-                    <div style="margin-top: 1.5rem;">
-                        <p style="color: var(--accent-color); margin-bottom: 0.5rem; font-weight: bold;">
-                            Verification Steps:
-                        </p>
-                        <ol style="color: rgba(255,255,255,0.8); padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                            <li>Visit instagram.com/youraccount</li>
-                            <li>Click "Follow" button</li>
-                            <li>Return here and click Verify</li>
-                        </ol>
-                    </div>
-                    
-                    <button onclick="completeTask(1)" class="btn btn-primary" style="width: 100%;">
-                        Verify Instagram Task
-                    </button>
-                </div>
-
-                <!-- Twitter Task -->
-                <div class="task-card">
-                    <div class="task-header">
-                        <div class="task-icon">🐦</div>
-                        <h3 class="task-title">Twitter Task</h3>
-                    </div>
-                    <div id="task2Status" class="task-status status-pending">Pending</div>
-                    
-                    <p class="task-description">
-                        Follow our Twitter handle to earn 100 VNTT tokens.
-                        Find our profile, click Follow, then verify below.
-                    </p>
-                    
-                    <div class="task-reward">Reward: 100 VNTT</div>
-                    
-                    <div style="margin-top: 1.5rem;">
-                        <p style="color: var(--accent-color); margin-bottom: 0.5rem; font-weight: bold;">
-                            Verification Steps:
-                        </p>
-                        <ol style="color: rgba(255,255,255,0.8); padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                            <li>Visit twitter.com/yourhandle</li>
-                            <li>Click "Follow" button</li>
-                            <li>Return here and click Verify</li>
-                        </ol>
-                    </div>
-                    
-                    <button onclick="completeTask(2)" class="btn btn-primary" style="width: 100%;">
-                        Verify Twitter Task
-                    </button>
-                </div>
-
-                <!-- YouTube Task -->
-                <div class="task-card">
-                    <div class="task-header">
-                        <div class="task-icon">▶️</div>
-                        <h3 class="task-title">YouTube Task</h3>
-                    </div>
-                    <div id="task3Status" class="task-status status-pending">Pending</div>
-                    
-                    <p class="task-description">
-                        Subscribe to our YouTube channel to earn 100 VNTT tokens.
-                        Visit our channel, click Subscribe, then verify.
-                    </p>
-                    
-                    <div class="task-reward">Reward: 100 VNTT</div>
-                    
-                    <div style="margin-top: 1.5rem;">
-                        <p style="color: var(--accent-color); margin-bottom: 0.5rem; font-weight: bold;">
-                            Verification Steps:
-                        </p>
-                        <ol style="color: rgba(255,255,255,0.8); padding-left: 1.5rem; margin-bottom: 1.5rem;">
-                            <li>Visit youtube.com/yourchannel</li>
-                            <li>Click "Subscribe" button</li>
-                            <li>Return here and click Verify</li>
-                        </ol>
-                    </div>
-                    
-                    <button onclick="completeTask(3)" class="btn btn-primary" style="width: 100%;">
-                        Verify YouTube Task
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Social Bonus Section -->
-        <div class="card" style="margin: 2rem 0; text-align: center;">
-            <h2 style="color: var(--secondary-color); margin-bottom: 1rem;">
-                Social Media Bonus - 400 VNTT
-            </h2>
+        <div class="free-activity-card">
+            <div class="free-badge">FREE</div>
+            <h2 style="color: var(--accent-color); margin-bottom: 1rem;">Daily Claim - 100 VNTT</h2>
             <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">
-                Complete all 4 social media tasks to claim a bonus of 400 VNTT tokens!
+                Claim your daily 100 VNTT tokens. Available once every 24 hours. <strong>No Gas Fees!</strong>
             </p>
-            <button onclick="claimSocialBonus()" class="btn btn-warning" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                Claim Social Bonus (400 VNTT)
+            <button onclick="dailyClaim()" class="btn" style="background: linear-gradient(45deg, var(--success-color), #27ae60); color: white; padding: 1rem 2rem; font-size: 1.1rem;">
+                🎁 Claim Daily Reward (100 VNTT)
             </button>
-            <p id="bonusStatus" style="margin-top: 1rem; color: var(--accent-color); font-size: 0.9rem;"></p>
+            <p id="nextClaimInfo" style="margin-top: 1rem; color: var(--accent-color); font-size: 0.9rem;"></p>
         </div>
 
-        <!-- Referral Section -->
-        <div class="referral-section">
-            <h2 style="color: var(--accent-color); margin-bottom: 1rem;">Referral System</h2>
-            <p style="margin-bottom: 1.5rem;">Earn from 10 levels of referrals:</p>
-            
-            <div class="referral-levels">
-                <div class="level-box">
-                    <div style="color: var(--accent-color); font-weight: bold; font-size: 1rem;">Level 1</div>
-                    <div style="color: var(--secondary-color); font-weight: bold; font-size: 1.1rem;">100 VNTT</div>
+        <!-- Social Media Tasks - अलग-अलग Cards -->
+        <h2 style="color: var(--secondary-color); margin: 3rem 0 1.5rem; text-align: center; font-size: 2rem;">
+            Social Media Tasks (Earn 100 VNTT Each)
+        </h2>
+        
+        <div class="task-cards-grid">
+            <!-- Facebook Task Card -->
+            <div class="task-card-individual">
+                <div class="task-header">
+                    <div class="task-icon">📘</div>
+                    <h3 class="task-title">Facebook Task</h3>
                 </div>
-                <div class="level-box">
-                    <div style="color: var(--accent-color); font-weight: bold; font-size: 1rem;">Level 2</div>
-                    <div style="color: var(--secondary-color); font-weight: bold; font-size: 1.1rem;">80 VNTT</div>
-                </div>
-                <div class="level-box">
-                    <div style="color: var(--accent-color); font-weight: bold; font-size: 1rem;">Level 3</div>
-                    <div style="color: var(--secondary-color); font-weight: bold; font-size: 1.1rem;">60 VNTT</div>
-                </div>
-                <div class="level-box">
-                    <div style="color: var(--accent-color); font-weight: bold; font-size: 1rem;">Level 4</div>
-                    <div style="color: var(--secondary-color); font-weight: bold; font-size: 1.1rem;">40 VNTT</div>
-                </div>
-                <div class="level-box">
-                    <div style="color: var(--accent-color); font-weight: bold; font-size: 1rem;">Level 5</div>
-                    <div style="color: var(--secondary-color); font-weight: bold; font-size: 1.1rem;">20 VNTT</div>
-                </div>
+                <div id="task0Status" class="task-status status-pending">Pending</div>
+                
+                <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">
+                    Follow our official Facebook page to earn 100 VNTT tokens.
+                </p>
+                
+                <div class="task-reward">Reward: 100 VNTT</div>
+                
+                <button onclick="completeTask(0)" class="btn" style="width: 100%; background: linear-gradient(45deg, #1877F2, #4267B2); color: white; margin-top: 1rem;">
+                    ✅ Complete Facebook Task
+                </button>
             </div>
-            
-            <div style="margin-top: 1.5rem;">
-                <p style="margin-bottom: 0.5rem; color: var(--accent-color); font-weight: bold;">Your Referral Link:</p>
-                <div class="referral-link-box">
-                    <span id="referralLinkText">Connect wallet to get your link</span>
+
+            <!-- Instagram Task Card -->
+            <div class="task-card-individual">
+                <div class="task-header">
+                    <div class="task-icon">📷</div>
+                    <h3 class="task-title">Instagram Task</h3>
                 </div>
-                <button onclick="copyReferralLink()" class="btn btn-info" style="margin-top: 1rem; width: 100%;">
-                    Copy Referral Link
+                <div id="task1Status" class="task-status status-pending">Pending</div>
+                
+                <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">
+                    Follow our Instagram account to earn 100 VNTT tokens.
+                </p>
+                
+                <div class="task-reward">Reward: 100 VNTT</div>
+                
+                <button onclick="completeTask(1)" class="btn" style="width: 100%; background: linear-gradient(45deg, #E4405F, #833AB4); color: white; margin-top: 1rem;">
+                    ✅ Complete Instagram Task
+                </button>
+            </div>
+
+            <!-- Twitter Task Card -->
+            <div class="task-card-individual">
+                <div class="task-header">
+                    <div class="task-icon">🐦</div>
+                    <h3 class="task-title">Twitter Task</h3>
+                </div>
+                <div id="task2Status" class="task-status status-pending">Pending</div>
+                
+                <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">
+                    Follow our Twitter handle to earn 100 VNTT tokens.
+                </p>
+                
+                <div class="task-reward">Reward: 100 VNTT</div>
+                
+                <button onclick="completeTask(2)" class="btn" style="width: 100%; background: linear-gradient(45deg, #1DA1F2, #1A91DA); color: white; margin-top: 1rem;">
+                    ✅ Complete Twitter Task
+                </button>
+            </div>
+
+            <!-- YouTube Task Card -->
+            <div class="task-card-individual">
+                <div class="task-header">
+                    <div class="task-icon">▶️</div>
+                    <h3 class="task-title">YouTube Task</h3>
+                </div>
+                <div id="task3Status" class="task-status status-pending">Pending</div>
+                
+                <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">
+                    Subscribe to our YouTube channel to earn 100 VNTT tokens.
+                </p>
+                
+                <div class="task-reward">Reward: 100 VNTT</div>
+                
+                <button onclick="completeTask(3)" class="btn" style="width: 100%; background: linear-gradient(45deg, #FF0000, #CC0000); color: white; margin-top: 1rem;">
+                    ✅ Complete YouTube Task
                 </button>
             </div>
         </div>
 
-        <!-- Admin Section (Owner Only) -->
-        <div id="adminSection" class="admin-section" style="display: none;">
-            <h2 style="color: #e74c3c; margin-bottom: 1rem; text-align: center;">Admin Controls</h2>
-            <div class="admin-buttons">
-                <button onclick="resetDailyClaims()" class="btn btn-danger">
+        <!-- Social Bonus Cards - अलग-अलग Cards -->
+        <h2 style="color: var(--secondary-color); margin: 3rem 0 1.5rem; text-align: center; font-size: 2rem;">
+            Social Media Bonuses
+        </h2>
+        
+        <div class="bonus-cards-grid">
+            <!-- Task Completion Bonus -->
+            <div class="bonus-card">
+                <div class="bonus-icon">🎯</div>
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Task Completion Bonus</h3>
+                <p style="margin-bottom: 1rem;">
+                    Complete any social media task to earn bonus rewards.
+                </p>
+                <div class="bonus-amount">+100 VNTT</div>
+                <p id="taskBonusStatus" style="color: var(--accent-color); font-size: 0.9rem; margin-top: 1rem;">
+                    Complete a task to claim
+                </p>
+            </div>
+
+            <!-- All Tasks Bonus -->
+            <div class="bonus-card">
+                <div class="bonus-icon">🏆</div>
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">All Tasks Bonus</h3>
+                <p style="margin-bottom: 1rem;">
+                    Complete ALL 4 social media tasks to earn mega bonus.
+                </p>
+                <div class="bonus-amount">+400 VNTT</div>
+                <button onclick="claimSocialBonus()" class="btn" style="width: 100%; margin-top: 1rem; background: linear-gradient(45deg, #9C27B0, #E91E63); color: white;">
+                    🏆 Claim All Tasks Bonus
+                </button>
+                <p id="allTasksBonusStatus" style="color: var(--accent-color); font-size: 0.9rem; margin-top: 1rem;"></p>
+            </div>
+
+            <!-- Referral Bonus -->
+            <div class="bonus-card">
+                <div class="bonus-icon">👥</div>
+                <h3 style="color: var(--accent-color); margin-bottom: 1rem;">Referral Bonus</h3>
+                <p style="margin-bottom: 1rem;">
+                    Earn from 10 levels of referrals. Share your link and earn!
+                </p>
+                <div class="bonus-amount">Up to 100 VNTT</div>
+                <div style="margin-top: 1rem; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px;">
+                    <p id="referralLinkText" style="word-break: break-all; font-size: 0.9rem;">Connect wallet for link</p>
+                </div>
+                <button onclick="copyReferralLink()" class="btn" style="width: 100%; margin-top: 1rem;">
+                    📋 Copy Referral Link
+                </button>
+            </div>
+        </div>
+
+        <!-- Registration Section (Optional Referral) -->
+        <div id="registrationSection" class="free-activity-card" style="display: none;">
+            <h2 style="color: var(--secondary-color); margin-bottom: 1rem;">Complete Registration</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Register to start earning. <strong>Referral is optional</strong> - you can register without referral too!
+            </p>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; color: var(--accent-color); margin-bottom: 0.5rem; font-weight: bold;">
+                    Referral Address (Optional):
+                </label>
+                <input type="text" id="referralAddress" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.1); color: white;" 
+                       placeholder="Enter referral address (or leave empty)" />
+                <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 0.5rem;">
+                    If you have a referral, enter their address. Otherwise leave empty to register without referral.
+                </p>
+            </div>
+            
+            <button onclick="registerUser()" class="btn" style="width: 100%; background: linear-gradient(45deg, var(--success-color), #27ae60); color: white; padding: 1rem; font-size: 1.1rem;">
+                ✅ Complete Registration (FREE)
+            </button>
+        </div>
+
+        <!-- Account Activation Section -->
+        <div id="activationSection" class="free-activity-card" style="display: none;">
+            <h2 style="color: var(--secondary-color); margin-bottom: 1rem;">Activate Your Account</h2>
+            <p style="margin-bottom: 1.5rem;">
+                To start claiming rewards, activate your account. <strong>No Gas Fees Required!</strong>
+            </p>
+            
+            <div style="text-align: center; margin: 2rem 0;">
+                <div class="loading-spinner" id="activationSpinner" style="display: none; margin: 0 auto;"></div>
+                <p id="activationStatus" style="color: var(--accent-color); font-weight: bold;"></p>
+            </div>
+            
+            <button onclick="activateAccount()" class="btn" style="width: 100%; background: linear-gradient(45deg, var(--secondary-color), var(--hover-color)); color: var(--primary-color); padding: 1rem; font-size: 1.1rem; font-weight: bold;">
+                ⚡ Activate Account (FREE)
+            </button>
+        </div>
+
+        <!-- Admin Section (Hidden from Users) -->
+        <div id="adminSection" style="display: none; margin-top: 3rem; padding: 1.5rem; background: rgba(231, 76, 60, 0.1); border-radius: 12px; border: 1px solid #e74c3c;">
+            <h2 style="color: #e74c3c; margin-bottom: 1rem; text-align: center;">👑 Admin Controls</h2>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <button onclick="resetDailyClaims()" class="btn" style="background: linear-gradient(45deg, #e74c3c, #c0392b); color: white;">
                     Reset Daily Claims
                 </button>
-                <button onclick="toggleProjectStatus()" class="btn btn-warning">
+                <button onclick="toggleProjectStatus()" class="btn" style="background: linear-gradient(45deg, #f39c12, #e67e22); color: white;">
                     Toggle Project Status
                 </button>
-                <button onclick="toggleAntiBot()" class="btn btn-info">
+                <button onclick="toggleAntiBot()" class="btn" style="background: linear-gradient(45deg, #3498db, #2980b9); color: white;">
                     Toggle Anti-Bot
-                </button>
-                <button onclick="forceActivateUser()" class="btn btn-success">
-                    Force Activate User
                 </button>
             </div>
         </div>
@@ -758,57 +498,8 @@
     <!-- Footer -->
     <footer style="background: var(--footer-bg); padding: 2rem; margin-top: 3rem; text-align: center;">
         <p>© 2024 V Network Token Trust. All rights reserved.</p>
-        <p style="margin-top: 0.5rem; opacity: 0.8;">Powered by Binance Smart Chain</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">🚀 No Gas Fees | Instant Rewards | Secure Platform</p>
     </footer>
-
-    <!-- Activation Modal -->
-    <div id="activationModal" class="modal-overlay">
-        <div class="modal-content">
-            <button onclick="closeModal()" class="modal-close">×</button>
-            <h2 class="modal-title">Activate Your Account</h2>
-            <p class="modal-message">
-                To start earning VNTT tokens, you need to activate your account by paying 0.30 USDT activation fee.
-            </p>
-            <div style="text-align: center; margin: 2rem 0;">
-                <div class="loading-spinner" id="modalSpinner" style="display: none;"></div>
-                <p id="modalStatus" style="color: var(--accent-color); font-weight: bold;"></p>
-            </div>
-            <div class="modal-buttons">
-                <button onclick="approveUSDT()" class="btn btn-warning" id="approveBtn">
-                    Approve USDT
-                </button>
-                <button onclick="payActivationFee()" class="btn btn-success" id="payBtn" style="display: none;">
-                    Pay 0.30 USDT
-                </button>
-                <button onclick="closeModal()" class="btn btn-danger">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Task Verification Modal -->
-    <div id="verificationModal" class="modal-overlay">
-        <div class="modal-content">
-            <button onclick="closeVerificationModal()" class="modal-close">×</button>
-            <h2 class="modal-title" id="verificationTitle">Task Verification</h2>
-            <p class="modal-message" id="verificationMessage">
-                Please confirm you have completed the task.
-            </p>
-            <div style="text-align: center; margin: 2rem 0;">
-                <div class="loading-spinner" id="verificationSpinner" style="display: none;"></div>
-                <p id="verificationStatus" style="color: var(--accent-color);"></p>
-            </div>
-            <div class="modal-buttons">
-                <button onclick="confirmVerification()" class="btn btn-success" id="confirmBtn">
-                    Yes, I Completed Task
-                </button>
-                <button onclick="closeVerificationModal()" class="btn btn-danger">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
