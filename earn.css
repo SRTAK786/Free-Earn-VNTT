@@ -1,0 +1,530 @@
+/* earn.css - Free Earn VNTT Page Styles */
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, rgba(0,31,63,0.9), rgba(0,64,128,0.9));
+    margin-bottom: 2rem;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.hero-section h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+    text-shadow: 0 0 10px rgba(255,179,0,0.5);
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+/* Wallet Display */
+.wallet-display {
+    background: rgba(0, 43, 92, 0.8);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1rem auto;
+    max-width: 800px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.wallet-title {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.wallet-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.wallet-status {
+    color: var(--warning-color);
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.wallet-address {
+    word-break: break-all;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-family: monospace;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* User Stats Grid */
+.user-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.stat-item {
+    background: rgba(255,255,255,0.05);
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-3px);
+}
+
+.stat-label {
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    color: var(--secondary-color);
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Section Titles */
+.section-title {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.tasks-title {
+    color: var(--secondary-color);
+    margin: 3rem 0 1.5rem;
+    text-align: center;
+    font-size: 2rem;
+}
+
+/* Cards */
+.card {
+    margin-bottom: 2rem;
+}
+
+.section-content {
+    text-align: center;
+}
+
+.section-desc {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.claim-btn {
+    background: linear-gradient(45deg, var(--success-color), #27ae60);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.claim-info {
+    margin-top: 1rem;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+}
+
+/* Tasks Grid */
+.tasks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.task-box {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.task-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4), var(--neon-glow);
+}
+
+.task-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.task-name {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.task-desc {
+    margin-bottom: 1rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.task-reward {
+    color: var(--secondary-color);
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    text-shadow: 0 0 5px rgba(255,179,0,0.3);
+}
+
+.task-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.status-pending {
+    background: rgba(243, 156, 18, 0.2);
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+}
+
+.status-completed {
+    background: rgba(46, 204, 113, 0.2);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.task-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.8rem;
+    font-weight: bold;
+}
+
+/* Bonus Section */
+.bonus-card {
+    margin-top: 2rem;
+}
+
+.bonus-title {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.bonus-desc {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.bonus-content {
+    text-align: center;
+}
+
+.bonus-btn {
+    background: linear-gradient(45deg, #9C27B0, #E91E63);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.bonus-info {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Referral Section */
+.referral-card {
+    margin-top: 2rem;
+}
+
+.referral-title {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.referral-desc {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.referral-levels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.level-box {
+    background: rgba(0,43,92,0.6);
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.level-box:hover {
+    transform: translateY(-3px);
+    background: rgba(0,43,92,0.8);
+}
+
+.level-number {
+    color: var(--accent-color);
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.level-reward {
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.referral-link-section {
+    margin-top: 1.5rem;
+}
+
+.referral-link-title {
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.referral-link-box {
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    word-break: break-all;
+    font-family: monospace;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.copy-btn {
+    width: 100%;
+    padding: 0.8rem;
+    font-weight: bold;
+}
+
+/* Admin Section */
+.admin-section {
+    display: none;
+    margin-top: 3rem;
+}
+
+.admin-title {
+    color: var(--warning-color);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.admin-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.admin-btn {
+    background: linear-gradient(45deg, #6c757d, #5a6268);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    font-weight: bold;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), var(--neon-glow);
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-title {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.modal-message {
+    margin: 1.5rem 0;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.modal-status-area {
+    text-align: center;
+    margin: 2rem 0;
+    min-height: 60px;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: var(--accent-color);
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto;
+}
+
+.modal-status-text {
+    color: var(--accent-color);
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.approve-btn {
+    background: linear-gradient(45deg, #FF9800, #FFC107);
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+}
+
+.pay-btn {
+    background: linear-gradient(45deg, var(--success-color), #27ae60);
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+}
+
+.cancel-btn {
+    background: linear-gradient(45deg, #6c757d, #5a6268);
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+}
+
+/* Animations */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .tasks-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .user-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .referral-levels {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .admin-buttons {
+        flex-direction: column;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+    }
+    
+    .wallet-info {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .referral-levels {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
+    }
+}
+
+/* Footer */
+footer {
+    background: var(--footer-bg);
+    padding: 2rem;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.footer-sub {
+    margin-top: 0.5rem;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
