@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Earn VNTT - V Network Token Trust</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <link rel="stylesheet" href="earn.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/">
+            <img src="your-logo.png" alt="V Network Logo" class="logo">
+        </a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        <ul id="navMenu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/stake.html">Stake</a></li>
+            <li><a href="/team.html">Team</a></li>
+            <li><a href="#" class="active">Free Earn VNTT</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>Free Earn VNTT Tokens</h1>
+        <p>Complete simple tasks and earn VNTT tokens daily. Connect your wallet to get started!</p>
+        
+        <!-- Wallet Connect Section -->
+        <div class="wallet-display">
+            <h3 class="wallet-title">Wallet Status</h3>
+            <div class="wallet-info">
+                <div>
+                    <p id="walletStatusText" class="wallet-status">Not Connected</p>
+                    <p id="walletAddressText" class="wallet-address"></p>
+                </div>
+                <button onclick="connectWallet()" class="btn wallet-connect-btn">
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- User Stats -->
+        <div class="user-stats-grid">
+            <div class="stat-item">
+                <div class="stat-label">Total Earned</div>
+                <div class="stat-value" id="totalEarnedStat">0 VNTT</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Locked Tokens</div>
+                <div class="stat-value" id="lockedTokensStat">0 VNTT</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Direct Referrals</div>
+                <div class="stat-value" id="referralsStat">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Account Status</div>
+                <div class="stat-value" id="accountStatusStat">Inactive</div>
+            </div>
+        </div>
+
+        <!-- Daily Claim Section -->
+        <div class="card">
+            <h2 class="section-title">
+                Daily Claim - 100 VNTT
+            </h2>
+            <div class="section-content">
+                <p class="section-desc">
+                    Claim your daily 100 VNTT tokens. Available once every 24 hours.
+                </p>
+                <button onclick="dailyClaim()" class="btn claim-btn">
+                    Claim Daily Reward (100 VNTT)
+                </button>
+                <p id="nextClaimInfo" class="claim-info"></p>
+            </div>
+        </div>
+
+        <!-- Social Media Tasks -->
+        <h2 class="tasks-title">
+            Complete Social Media Tasks
+        </h2>
+        
+        <div class="tasks-grid">
+            <!-- Facebook Task -->
+            <div class="task-box">
+                <div class="task-icon">📘</div>
+                <h3 class="task-name">Facebook</h3>
+                <p class="task-desc">Follow our official Facebook page</p>
+                <div class="task-reward">+100 VNTT</div>
+                <div id="task0Status" class="task-status status-pending">Pending</div>
+                <button onclick="completeTask(0)" class="btn task-btn">
+                    Complete Task
+                </button>
+            </div>
+
+            <!-- Instagram Task -->
+            <div class="task-box">
+                <div class="task-icon">📷</div>
+                <h3 class="task-name">Instagram</h3>
+                <p class="task-desc">Follow our Instagram account</p>
+                <div class="task-reward">+100 VNTT</div>
+                <div id="task1Status" class="task-status status-pending">Pending</div>
+                <button onclick="completeTask(1)" class="btn task-btn">
+                    Complete Task
+                </button>
+            </div>
+
+            <!-- Twitter Task -->
+            <div class="task-box">
+                <div class="task-icon">🐦</div>
+                <h3 class="task-name">Twitter</h3>
+                <p class="task-desc">Follow our Twitter handle</p>
+                <div class="task-reward">+100 VNTT</div>
+                <div id="task2Status" class="task-status status-pending">Pending</div>
+                <button onclick="completeTask(2)" class="btn task-btn">
+                    Complete Task
+                </button>
+            </div>
+
+            <!-- YouTube Task -->
+            <div class="task-box">
+                <div class="task-icon">▶️</div>
+                <h3 class="task-name">YouTube</h3>
+                <p class="task-desc">Subscribe to our YouTube channel</p>
+                <div class="task-reward">+100 VNTT</div>
+                <div id="task3Status" class="task-status status-pending">Pending</div>
+                <button onclick="completeTask(3)" class="btn task-btn">
+                    Complete Task
+                </button>
+            </div>
+        </div>
+
+        <!-- Social Bonus -->
+        <div class="card bonus-card">
+            <h2 class="bonus-title">
+                Social Media Bonus - 400 VNTT
+            </h2>
+            <p class="bonus-desc">
+                Complete all 4 social media tasks to claim a bonus of 400 VNTT tokens!
+            </p>
+            <div class="bonus-content">
+                <button onclick="claimSocialBonus()" class="btn bonus-btn">
+                    Claim Social Bonus (400 VNTT)
+                </button>
+                <p id="bonusStatus" class="bonus-info"></p>
+            </div>
+        </div>
+
+        <!-- Referral Section -->
+        <div class="card referral-card">
+            <h2 class="referral-title">Referral System</h2>
+            <p class="referral-desc">Earn from 10 levels of referrals:</p>
+            
+            <div class="referral-levels">
+                <div class="level-box">
+                    <div class="level-number">Level 1</div>
+                    <div class="level-reward">100 VNTT</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-number">Level 2</div>
+                    <div class="level-reward">80 VNTT</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-number">Level 3</div>
+                    <div class="level-reward">60 VNTT</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-number">Level 4</div>
+                    <div class="level-reward">40 VNTT</div>
+                </div>
+                <div class="level-box">
+                    <div class="level-number">Level 5</div>
+                    <div class="level-reward">20 VNTT</div>
+                </div>
+            </div>
+            
+            <div class="referral-link-section">
+                <p class="referral-link-title">Your Referral Link:</p>
+                <div class="referral-link-box">
+                    <span id="referralLinkText">Connect wallet to get your link</span>
+                </div>
+                <button onclick="copyReferralLink()" class="btn copy-btn">
+                    Copy Referral Link
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Controls (Only visible to owner) -->
+        <div id="adminSection" class="admin-section">
+            <div class="card">
+                <h2 class="admin-title">Admin Controls</h2>
+                <div class="admin-buttons">
+                    <button onclick="resetDailyClaims()" class="btn admin-btn">
+                        Reset Daily Claims
+                    </button>
+                    <button onclick="toggleProjectStatus()" class="btn admin-btn">
+                        Toggle Project Status
+                    </button>
+                    <button onclick="toggleAntiBot()" class="btn admin-btn">
+                        Toggle Anti-Bot
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 V Network Token Trust. All rights reserved.</p>
+        <p class="footer-sub">Powered by Binance Smart Chain</p>
+    </footer>
+
+    <!-- Activation Modal -->
+    <div id="activationModal" class="modal-overlay">
+        <div class="modal-content">
+            <button onclick="closeModal()" class="modal-close">×</button>
+            <h2 class="modal-title">Activate Your Account</h2>
+            <p class="modal-message">
+                To start earning VNTT tokens, you need to activate your account by paying 0.30 USDT activation fee.
+            </p>
+            <div class="modal-status-area">
+                <div class="loading-spinner" id="modalSpinner"></div>
+                <p id="modalStatus" class="modal-status-text"></p>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="approveUSDT()" class="btn approve-btn" id="approveBtn">
+                    Approve USDT
+                </button>
+                <button onclick="payActivationFee()" class="btn pay-btn" id="payBtn">
+                    Pay 0.30 USDT
+                </button>
+                <button onclick="closeModal()" class="btn cancel-btn">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="earn.js"></script>
+</body>
+</html>
