@@ -16,16 +16,17 @@ const usdtABI = [{"inputs":[],"payable":false,"stateMutability":"nonpayable","ty
 // ========== GLOBAL VARIABLES ==========
 let web3;
 let userAddress;
-let vnttContract;
 let mainContract;
 let usdtContract;
+let vnttContract;
 let isOwner = false;
+let currentTaskId = null;
 
-// ========== WALLET FUNCTIONS ==========
+// ========== WALLET CONNECTION ==========
 async function connectWallet() {
     try {
         if (!window.ethereum) {
-            alert('Please install MetaMask to continue!');
+            showAlert('Please install MetaMask to continue!', 'warning');
             return;
         }
         
@@ -35,9 +36,9 @@ async function connectWallet() {
         userAddress = accounts[0];
         
         // Initialize contracts
-        vnttContract = new web3.eth.Contract(vnttABI, VNTT_TOKEN_ADDRESS);
         mainContract = new web3.eth.Contract(mainABI, MAIN_CONTRACT_ADDRESS);
         usdtContract = new web3.eth.Contract(usdtABI, USDT_TOKEN_ADDRESS);
+        vnttContract = new web3.eth.Contract(vnttABI, VNTT_TOKEN_ADDRESS);
         
         // Update UI
         document.getElementById('walletStatusText').textContent = 'Connected';
@@ -49,21 +50,70 @@ async function connectWallet() {
         // Load user data
         await loadUserData();
         
-        // Check if user needs activation
+        // Check if user is registered
         const userInfo = await mainContract.methods.getUserInfo(userAddress).call();
-        if (!userInfo[1] && userInfo[2] > 0) { // isActive = false, but registered
+        const joinTime = userInfo[2];
+        
+        if (joinTime == 0) {
+            // User not registered - show registration form
+            document.getElementById('registrationSection').style.display = 'block';
+        } else if (!userInfo[1]) {
+            // User registered but not active - show activation modal
             setTimeout(() => {
                 showActivationModal();
             }, 1000);
         }
         
+        showAlert('Wallet connected successfully!', 'success');
+        
     } catch (error) {
         console.error('Error connecting wallet:', error);
-        showError('Error connecting wallet: ' + error.message);
+        showAlert('Error connecting wallet: ' + error.message, 'danger');
     }
 }
 
-// ========== USER DATA FUNCTIONS ==========
+// ========== USER REGISTRATION ==========
+async function registerUser() {
+    if (!mainContract || !userAddress) {
+        showAlert('Please connect your wallet first!', 'warning');
+        return;
+    }
+    
+    try {
+        const referralAddress = document.getElementById('referralAddress').value.trim();
+        let uplineAddress;
+        
+        if (referralAddress && web3.utils.isAddress(referralAddress)) {
+            uplineAddress = referralAddress;
+        } else if (referralAddress === '') {
+            // Use contract owner as default upline
+            uplineAddress = await mainContract.methods.owner().call();
+        } else {
+            showAlert('Please enter a valid wallet address or leave empty', 'warning');
+            return;
+        }
+        
+        showLoading('Registering account...');
+        const tx = await mainContract.methods.register(uplineAddress)
+            .send({ from: userAddress });
+        
+        hideLoading();
+        document.getElementById('registrationSection').style.display = 'none';
+        showAlert('Registration successful! Please activate your account to start earning.', 'success');
+        
+        // Show activation modal
+        setTimeout(() => {
+            showActivationModal();
+        }, 1000);
+        
+    } catch (error) {
+        hideLoading();
+        console.error('Error registering user:', error);
+        showAlert('Error: ' + error.message, 'danger');
+    }
+}
+
+// ========== LOAD USER DATA ==========
 async function loadUserData() {
     if (!mainContract || !userAddress) return;
     
@@ -76,7 +126,9 @@ async function loadUserData() {
         const directReferrals = userInfo[10];
         const isActive = userInfo[1];
         const lastClaimTime = userInfo[7];
+        const joinTime = userInfo[2];
         
+        // Update stats display
         document.getElementById('totalEarnedStat').textContent = 
             parseFloat(totalEarned).toFixed(2) + ' VNTT';
         document.getElementById('lockedTokensStat').textContent = 
@@ -85,13 +137,21 @@ async function loadUserData() {
         
         // Update account status
         const accountStatusElement = document.getElementById('accountStatusStat');
-        accountStatusElement.textContent = isActive ? 'Active ✅' : 'Inactive ❌';
-        accountStatusElement.style.color = isActive ? '#2ecc71' : '#e74c3c';
+        if (joinTime == 0) {
+            accountStatusElement.textContent = 'Not Registered';
+            accountStatusElement.style.color = '#e74c3c';
+        } else if (isActive) {
+            accountStatusElement.textContent = 'Active ✅';
+            accountStatusElement.style.color = '#2ecc71';
+        } else {
+            accountStatusElement.textContent = 'Inactive ❌';
+            accountStatusElement.style.color = '#f39c12';
+        }
         
         // Update next claim info
         const claimInfoElement = document.getElementById('nextClaimInfo');
         if (isActive && lastClaimTime > 0) {
-            const nextClaimTime = parseInt(lastClaimTime) + 86400; // 24 hours in seconds
+            const nextClaimTime = parseInt(lastClaimTime) + 86400; // 24 hours
             const currentTime = Math.floor(Date.now() / 1000);
             
             if (currentTime < nextClaimTime) {
@@ -159,10 +219,10 @@ async function loadUserData() {
     }
 }
 
-// ========== TASK FUNCTIONS ==========
+// ========== DAILY CLAIM ==========
 async function dailyClaim() {
     if (!mainContract || !userAddress) {
-        showError('Please connect your wallet first!');
+        showAlert('Please connect your wallet first!', 'warning');
         return;
     }
     
@@ -172,54 +232,77 @@ async function dailyClaim() {
             .send({ from: userAddress });
         
         hideLoading();
-        showSuccess('Daily reward claimed successfully! 100 VNTT added to your account.');
+        showAlert('Daily reward claimed successfully! 100 VNTT added to your account.', 'success');
         await loadUserData();
         
     } catch (error) {
         hideLoading();
         console.error('Error claiming daily reward:', error);
-        showError('Error: ' + error.message);
+        showAlert('Error: ' + error.message, 'danger');
     }
 }
 
+// ========== TASK COMPLETION ==========
 async function completeTask(taskId) {
     if (!mainContract || !userAddress) {
-        showError('Please connect your wallet first!');
+        showAlert('Please connect your wallet first!', 'warning');
         return;
     }
     
     // Task names for display
     const taskNames = ['Facebook', 'Instagram', 'Twitter', 'YouTube'];
     
+    // Show verification modal
+    currentTaskId = taskId;
+    document.getElementById('verificationTitle').textContent = `Verify ${taskNames[taskId]} Task`;
+    document.getElementById('verificationMessage').textContent = 
+        `Have you completed the ${taskNames[taskId]} task?\n\n` +
+        `1. Visit our ${taskNames[taskId]} page\n` +
+        `2. Follow/Subscribe to our account\n` +
+        `3. Click "Yes, I Completed Task" to claim reward`;
+    document.getElementById('verificationModal').style.display = 'flex';
+}
+
+// ========== VERIFICATION CONFIRMATION ==========
+async function confirmVerification() {
+    if (currentTaskId === null) return;
+    
     try {
-        // Ask user to confirm they completed the task
-        const confirmComplete = confirm(
-            `Have you completed the ${taskNames[taskId]} task?\n\n` +
-            `1. Go to ${taskNames[taskId]}\n` +
-            `2. Follow/Subscribe to our page\n` +
-            `3. Then click OK to claim your reward`
-        );
+        document.getElementById('verificationSpinner').style.display = 'block';
+        document.getElementById('confirmBtn').disabled = true;
+        document.getElementById('verificationStatus').textContent = 'Processing verification...';
         
-        if (!confirmComplete) return;
-        
-        showLoading(`Completing ${taskNames[taskId]} task...`);
-        const tx = await mainContract.methods.completeSocialTask(taskId)
+        const tx = await mainContract.methods.completeSocialTask(currentTaskId)
             .send({ from: userAddress });
         
-        hideLoading();
-        showSuccess(`${taskNames[taskId]} task completed! 100 VNTT added to your account.`);
-        await loadUserData();
+        document.getElementById('verificationStatus').textContent = 'Task verified successfully!';
+        document.getElementById('verificationSpinner').style.display = 'none';
+        
+        setTimeout(() => {
+            closeVerificationModal();
+            showAlert('Task completed! 100 VNTT added to your account.', 'success');
+            loadUserData();
+        }, 1500);
         
     } catch (error) {
-        hideLoading();
         console.error('Error completing task:', error);
-        showError('Error: ' + error.message);
+        document.getElementById('verificationStatus').textContent = 'Error: ' + error.message;
+        document.getElementById('verificationSpinner').style.display = 'none';
+        document.getElementById('confirmBtn').disabled = false;
     }
 }
 
+function closeVerificationModal() {
+    document.getElementById('verificationModal').style.display = 'none';
+    document.getElementById('verificationSpinner').style.display = 'none';
+    document.getElementById('confirmBtn').disabled = false;
+    currentTaskId = null;
+}
+
+// ========== SOCIAL BONUS ==========
 async function claimSocialBonus() {
     if (!mainContract || !userAddress) {
-        showError('Please connect your wallet first!');
+        showAlert('Please connect your wallet first!', 'warning');
         return;
     }
     
@@ -229,23 +312,25 @@ async function claimSocialBonus() {
             .send({ from: userAddress });
         
         hideLoading();
-        showSuccess('Social bonus claimed successfully! 400 VNTT added to your account.');
+        showAlert('Social bonus claimed successfully! 400 VNTT added to your account.', 'success');
         await loadUserData();
         
     } catch (error) {
         hideLoading();
         console.error('Error claiming social bonus:', error);
-        showError('Error: ' + error.message);
+        showAlert('Error: ' + error.message, 'danger');
     }
 }
 
-// ========== ACTIVATION FUNCTIONS ==========
+// ========== ACCOUNT ACTIVATION ==========
 function showActivationModal() {
     document.getElementById('activationModal').style.display = 'flex';
     document.getElementById('modalStatus').textContent = 'Ready to activate account...';
     document.getElementById('modalSpinner').style.display = 'none';
     document.getElementById('approveBtn').style.display = 'block';
     document.getElementById('payBtn').style.display = 'none';
+    document.getElementById('approveBtn').disabled = false;
+    document.getElementById('payBtn').disabled = false;
 }
 
 function closeModal() {
@@ -268,7 +353,6 @@ async function approveUSDT() {
         document.getElementById('modalSpinner').style.display = 'none';
         document.getElementById('approveBtn').style.display = 'none';
         document.getElementById('payBtn').style.display = 'block';
-        document.getElementById('approveBtn').disabled = false;
         
     } catch (error) {
         console.error('Error approving USDT:', error);
@@ -293,7 +377,7 @@ async function payActivationFee() {
         setTimeout(() => {
             closeModal();
             loadUserData();
-            showSuccess('Account activated! You can now claim daily rewards.');
+            showAlert('Account activated! You can now claim daily rewards.', 'success');
         }, 2000);
         
     } catch (error) {
@@ -304,31 +388,26 @@ async function payActivationFee() {
     }
 }
 
-// ========== UTILITY FUNCTIONS ==========
+// ========== REFERRAL SYSTEM ==========
 function copyReferralLink() {
     const link = document.getElementById('referralLinkText').textContent;
     if (link === 'Connect wallet to get your link') {
-        showError('Please connect your wallet first!');
+        showAlert('Please connect your wallet first!', 'warning');
         return;
     }
     
     navigator.clipboard.writeText(link).then(() => {
-        showSuccess('Referral link copied to clipboard!');
+        showAlert('Referral link copied to clipboard!', 'success');
     }).catch(err => {
         console.error('Failed to copy:', err);
-        showError('Failed to copy link. Please try again.');
+        showAlert('Failed to copy link. Please try again.', 'danger');
     });
-}
-
-function toggleMobileMenu() {
-    const navMenu = document.getElementById('navMenu');
-    navMenu.classList.toggle('show');
 }
 
 // ========== ADMIN FUNCTIONS ==========
 async function resetDailyClaims() {
     if (!isOwner) {
-        showError('Only contract owner can perform this action!');
+        showAlert('Only contract owner can perform this action!', 'warning');
         return;
     }
     
@@ -341,18 +420,18 @@ async function resetDailyClaims() {
             .send({ from: userAddress });
         
         hideLoading();
-        showSuccess('Daily claims reset successfully!');
+        showAlert('Daily claims reset successfully!', 'success');
         
     } catch (error) {
         hideLoading();
         console.error('Error resetting daily claims:', error);
-        showError('Error: ' + error.message);
+        showAlert('Error: ' + error.message, 'danger');
     }
 }
 
 async function toggleProjectStatus() {
     if (!isOwner) {
-        showError('Only contract owner can perform this action!');
+        showAlert('Only contract owner can perform this action!', 'warning');
         return;
     }
     
@@ -365,18 +444,18 @@ async function toggleProjectStatus() {
             .send({ from: userAddress });
         
         hideLoading();
-        showSuccess('Project status toggled successfully!');
+        showAlert('Project status toggled successfully!', 'success');
         
     } catch (error) {
         hideLoading();
         console.error('Error toggling project status:', error);
-        showError('Error: ' + error.message);
+        showAlert('Error: ' + error.message, 'danger');
     }
 }
 
 async function toggleAntiBot() {
     if (!isOwner) {
-        showError('Only contract owner can perform this action!');
+        showAlert('Only contract owner can perform this action!', 'warning');
         return;
     }
     
@@ -389,50 +468,132 @@ async function toggleAntiBot() {
             .send({ from: userAddress });
         
         hideLoading();
-        showSuccess('Anti-bot protection toggled successfully!');
+        showAlert('Anti-bot protection toggled successfully!', 'success');
         
     } catch (error) {
         hideLoading();
         console.error('Error toggling anti-bot:', error);
-        showError('Error: ' + error.message);
+        showAlert('Error: ' + error.message, 'danger');
     }
 }
 
-// ========== UI HELPER FUNCTIONS ==========
+async function forceActivateUser() {
+    if (!isOwner) {
+        showAlert('Only contract owner can perform this action!', 'warning');
+        return;
+    }
+    
+    const userAddressInput = prompt('Enter user address to force activate:');
+    if (!userAddressInput || !web3.utils.isAddress(userAddressInput)) {
+        showAlert('Please enter a valid wallet address', 'warning');
+        return;
+    }
+    
+    try {
+        showLoading('Force activating user...');
+        const tx = await mainContract.methods.forceActivate(userAddressInput)
+            .send({ from: userAddress });
+        
+        hideLoading();
+        showAlert(`User ${userAddressInput} activated successfully!`, 'success');
+        
+    } catch (error) {
+        hideLoading();
+        console.error('Error force activating user:', error);
+        showAlert('Error: ' + error.message, 'danger');
+    }
+}
+
+// ========== UTILITY FUNCTIONS ==========
+function toggleMobileMenu() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.classList.toggle('show');
+}
+
+function showAlert(message, type) {
+    // Create alert element
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`;
+    alertDiv.textContent = message;
+    alertDiv.style.position = 'fixed';
+    alertDiv.style.top = '80px';
+    alertDiv.style.right = '20px';
+    alertDiv.style.zIndex = '3000';
+    alertDiv.style.maxWidth = '400px';
+    alertDiv.style.animation = 'slideIn 0.3s ease-out';
+    
+    document.body.appendChild(alertDiv);
+    
+    // Remove alert after 5 seconds
+    setTimeout(() => {
+        alertDiv.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.parentNode.removeChild(alertDiv);
+            }
+        }, 300);
+    }, 5000);
+}
+
 function showLoading(message) {
-    // You can implement a loading spinner here
+    // You can implement a better loading indicator here
     console.log('Loading:', message);
 }
 
 function hideLoading() {
-    // Hide loading spinner
+    // Hide loading indicator
     console.log('Loading complete');
 }
 
-function showSuccess(message) {
-    alert('✅ ' + message);
-}
+// Add CSS for alerts animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
 
-function showError(message) {
-    alert('❌ ' + message);
-}
-
-// ========== INITIALIZATION ==========
+// ========== EVENT LISTENERS ==========
 // Auto-connect wallet on page load if previously connected
 window.addEventListener('load', async () => {
     if (window.ethereum && window.ethereum.selectedAddress) {
         await connectWallet();
     }
     
-    // Add click event to close modal when clicking outside
+    // Close modals when clicking outside
     document.getElementById('activationModal').addEventListener('click', function(e) {
         if (e.target === this) {
             closeModal();
         }
     });
+    
+    document.getElementById('verificationModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeVerificationModal();
+        }
+    });
 });
 
-// Handle account changes
+// Handle wallet events
 if (window.ethereum) {
     window.ethereum.on('accountsChanged', async (accounts) => {
         if (accounts.length > 0) {
